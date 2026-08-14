@@ -48,8 +48,14 @@ function Index() {
   const result = mutation.data as Assessment | undefined;
 
   const submit = () => {
-    if (topic.trim().length < 5) return toast.error("Vui lòng nhập đề bài.");
-    if (wordCount < 40) return toast.error("Bài làm quá ngắn (tối thiểu ~40 từ).");
+    if (topic.trim().length < 5) {
+      toast.error("Vui lòng nhập đề bài.");
+      return;
+    }
+    if (wordCount < 40) {
+      toast.error("Bài làm quá ngắn (tối thiểu ~40 từ).");
+      return;
+    }
     mutation.mutate({ topic: topic.trim(), essay: essay.trim() });
   };
 
