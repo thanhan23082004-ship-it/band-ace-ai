@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EssaysRouteImport } from './routes/essays'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as GuideRouteImport } from './routes/guide'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as VocabularyRouteImport } from './routes/vocabulary'
 
@@ -30,6 +31,11 @@ const FaqRoute = FaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GuideRoute = GuideRouteImport.update({
+  id: '/guide',
+  path: '/guide',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HistoryRoute = HistoryRouteImport.update({
   id: '/history',
   path: '/history',
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/essays': typeof EssaysRoute
   '/faq': typeof FaqRoute
+  '/guide': typeof GuideRoute
   '/history': typeof HistoryRoute
   '/vocabulary': typeof VocabularyRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/essays': typeof EssaysRoute
   '/faq': typeof FaqRoute
+  '/guide': typeof GuideRoute
   '/history': typeof HistoryRoute
   '/vocabulary': typeof VocabularyRoute
 }
@@ -60,21 +68,30 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/essays': typeof EssaysRoute
   '/faq': typeof FaqRoute
+  '/guide': typeof GuideRoute
   '/history': typeof HistoryRoute
   '/vocabulary': typeof VocabularyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/essays' | '/faq' | '/history' | '/vocabulary'
+  fullPaths: '/' | '/essays' | '/faq' | '/guide' | '/history' | '/vocabulary'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/essays' | '/faq' | '/history' | '/vocabulary'
-  id: '__root__' | '/' | '/essays' | '/faq' | '/history' | '/vocabulary'
+  to: '/' | '/essays' | '/faq' | '/guide' | '/history' | '/vocabulary'
+  id:
+    | '__root__'
+    | '/'
+    | '/essays'
+    | '/faq'
+    | '/guide'
+    | '/history'
+    | '/vocabulary'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   EssaysRoute: typeof EssaysRoute
   FaqRoute: typeof FaqRoute
+  GuideRoute: typeof GuideRoute
   HistoryRoute: typeof HistoryRoute
   VocabularyRoute: typeof VocabularyRoute
 }
@@ -102,6 +119,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/guide': {
+      id: '/guide'
+      path: '/guide'
+      fullPath: '/guide'
+      preLoaderRoute: typeof GuideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/history': {
       id: '/history'
       path: '/history'
@@ -123,6 +147,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   EssaysRoute: EssaysRoute,
   FaqRoute: FaqRoute,
+  GuideRoute: GuideRoute,
   HistoryRoute: HistoryRoute,
   VocabularyRoute: VocabularyRoute,
 }
