@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EssaysRouteImport } from './routes/essays'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as VocabularyRouteImport } from './routes/vocabulary'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EssaysRoute = EssaysRouteImport.update({
+  id: '/essays',
+  path: '/essays',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HistoryRoute = HistoryRouteImport.update({
@@ -31,30 +37,34 @@ const VocabularyRoute = VocabularyRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/essays': typeof EssaysRoute
   '/history': typeof HistoryRoute
   '/vocabulary': typeof VocabularyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/essays': typeof EssaysRoute
   '/history': typeof HistoryRoute
   '/vocabulary': typeof VocabularyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/essays': typeof EssaysRoute
   '/history': typeof HistoryRoute
   '/vocabulary': typeof VocabularyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/history' | '/vocabulary'
+  fullPaths: '/' | '/essays' | '/history' | '/vocabulary'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/history' | '/vocabulary'
-  id: '__root__' | '/' | '/history' | '/vocabulary'
+  to: '/' | '/essays' | '/history' | '/vocabulary'
+  id: '__root__' | '/' | '/essays' | '/history' | '/vocabulary'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EssaysRoute: typeof EssaysRoute
   HistoryRoute: typeof HistoryRoute
   VocabularyRoute: typeof VocabularyRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/essays': {
+      id: '/essays'
+      path: '/essays'
+      fullPath: '/essays'
+      preLoaderRoute: typeof EssaysRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/history': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EssaysRoute: EssaysRoute,
   HistoryRoute: HistoryRoute,
   VocabularyRoute: VocabularyRoute,
 }
