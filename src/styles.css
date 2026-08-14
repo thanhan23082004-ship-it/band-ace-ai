@@ -66,6 +66,9 @@
   --color-warning-soft: var(--warning-soft);
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
+  --color-vip: var(--vip);
+  --color-vip-foreground: var(--vip-foreground);
+
   --font-display: "Plus Jakarta Sans", ui-sans-serif, sans-serif;
   --font-sans: "Inter", ui-sans-serif, sans-serif;
 }
