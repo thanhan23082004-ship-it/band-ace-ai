@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EssaysRouteImport } from './routes/essays'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as VocabularyRouteImport } from './routes/vocabulary'
 
@@ -22,6 +23,11 @@ const IndexRoute = IndexRouteImport.update({
 const EssaysRoute = EssaysRouteImport.update({
   id: '/essays',
   path: '/essays',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HistoryRoute = HistoryRouteImport.update({
@@ -38,12 +44,14 @@ const VocabularyRoute = VocabularyRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/essays': typeof EssaysRoute
+  '/faq': typeof FaqRoute
   '/history': typeof HistoryRoute
   '/vocabulary': typeof VocabularyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/essays': typeof EssaysRoute
+  '/faq': typeof FaqRoute
   '/history': typeof HistoryRoute
   '/vocabulary': typeof VocabularyRoute
 }
@@ -51,20 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/essays': typeof EssaysRoute
+  '/faq': typeof FaqRoute
   '/history': typeof HistoryRoute
   '/vocabulary': typeof VocabularyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/essays' | '/history' | '/vocabulary'
+  fullPaths: '/' | '/essays' | '/faq' | '/history' | '/vocabulary'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/essays' | '/history' | '/vocabulary'
-  id: '__root__' | '/' | '/essays' | '/history' | '/vocabulary'
+  to: '/' | '/essays' | '/faq' | '/history' | '/vocabulary'
+  id: '__root__' | '/' | '/essays' | '/faq' | '/history' | '/vocabulary'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   EssaysRoute: typeof EssaysRoute
+  FaqRoute: typeof FaqRoute
   HistoryRoute: typeof HistoryRoute
   VocabularyRoute: typeof VocabularyRoute
 }
@@ -83,6 +93,13 @@ declare module '@tanstack/react-router' {
       path: '/essays'
       fullPath: '/essays'
       preLoaderRoute: typeof EssaysRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/history': {
@@ -105,6 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   EssaysRoute: EssaysRoute,
+  FaqRoute: FaqRoute,
   HistoryRoute: HistoryRoute,
   VocabularyRoute: VocabularyRoute,
 }
