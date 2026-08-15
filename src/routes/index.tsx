@@ -1,34 +1,67 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
-import { ArrowRight, BookmarkPlus, Loader2, Sparkles, Wand2 } from "lucide-react";
+import { useMemo, useState, type ReactNode } from "react";
+import {
+  ArrowRight,
+  BookmarkPlus,
+  Copy,
+  Loader2,
+  Sparkles,
+  Wand2,
+} from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Timer40 } from "@/components/timer-40";
 import { assessEssay, type Assessment } from "@/lib/assess.functions";
 import { KEYS, addItem, newId } from "@/lib/storage";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Chấm bài IELTS Writing bằng AI — Band chuẩn giám khảo" },
+      { title: "IELTS For You — Chấm bài IELTS Writing bằng AI, giải thích tiếng Việt" },
       {
         name: "description",
         content:
-          "Chấm & sửa bài IELTS Writing trong 10 giây: điểm 4 tiêu chí, lỗi ngữ pháp, từ vựng Band 8.0+ và bài mẫu nâng cấp.",
+          "Chấm & sửa bài IELTS Writing trong 10 giây: điểm 4 tiêu chí, nhận xét tiếng Việt, từ vựng Band 8.0+ và bài mẫu nâng cấp.",
       },
-      { property: "og:title", content: "Chấm bài IELTS Writing bằng AI — Band chuẩn giám khảo" },
+      {
+        property: "og:title",
+        content: "IELTS For You — AI chấm bài Writing & giải thích chi tiết bằng tiếng Việt",
+      },
       {
         property: "og:description",
         content: "Phân tích 4 tiêu chí IELTS, sửa lỗi chi tiết và gợi ý từ vựng Band 8.0+.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,
 });
+
+function escapeRe(s: string) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/** Highlight the given phrases inside a text block. */
+function highlight(text: string, phrases: string[], className: string): ReactNode {
+  const list = phrases.map((p) => p.trim()).filter((p) => p.length > 2);
+  if (!list.length) return text;
+  const re = new RegExp(`(${list.map(escapeRe).join("|")})`, "gi");
+  return text.split(re).map((part, i) =>
+    list.some((p) => p.toLowerCase() === part.toLowerCase()) ? (
+      <mark key={i} className={className}>
+        {part}
+      </mark>
+    ) : (
+      <span key={i}>{part}</span>
+    ),
+  );
+}
 
 function Index() {
   const [topic, setTopic] = useState("");
@@ -55,6 +88,7 @@ function Index() {
   });
 
   const result = mutation.data as Assessment | undefined;
+  const submitted = mutation.variables?.essay ?? "";
 
   const submit = () => {
     if (topic.trim().length < 5) {
@@ -82,7 +116,17 @@ function Index() {
       overall: result.overall,
       content: result.upgraded,
     });
-    toast.success("Đã lưu bài mẫu vào Saved Essays.");
+    toast.success("Đã lưu bài viết vào Saved Essays.");
+  };
+
+  const copyUpgraded = async () => {
+    if (!result) return;
+    try {
+      await navigator.clipboard.writeText(result.upgraded);
+      toast.success("Đã copy bài mẫu Band 8.0+.");
+    } catch {
+      toast.error("Không copy được, vui lòng chọn và copy thủ công.");
+    }
   };
 
   return (
@@ -90,10 +134,10 @@ function Index() {
       <section className="py-14 text-center sm:py-20">
         <span className="inline-flex items-center gap-2 rounded-full border border-border bg-muted px-3.5 py-1.5 text-xs font-medium text-muted-foreground">
           <Sparkles className="h-3.5 w-3.5 text-primary" />
-          Chấm theo band descriptors chính thức
+          AI Chấm Bài &amp; Giải Thích Chi Tiết Bằng Tiếng Việt
         </span>
         <h1 className="mx-auto mt-6 max-w-3xl text-4xl leading-[1.08] font-extrabold sm:text-5xl md:text-[3.4rem]">
-          Chấm & Sửa Bài IELTS Writing Chuẩn Band Giám Khảo Trong 10 Giây
+          Chấm &amp; Sửa Bài IELTS Writing Chuẩn Band Giám Khảo Trong 10 Giây
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
           Phân tích chi tiết 4 tiêu chí, chỉ rõ lỗi sai ngữ pháp và gợi ý từ vựng Band 8.0+.
@@ -103,24 +147,27 @@ function Index() {
       <div className="grid gap-6 lg:grid-cols-2">
         {/* LEFT: input */}
         <div className="surface p-6">
-          <h2 className="text-lg font-bold">Bài làm của bạn</h2>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-lg font-bold">Khu vực làm bài</h2>
+            <Timer40 />
+          </div>
           <div className="mt-5 space-y-5">
             <div>
               <label className="text-sm font-medium" htmlFor="topic">
-                Đề bài (Essay Topic)
+                Đề bài (Topic)
               </label>
-              <Input
+              <Textarea
                 id="topic"
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
                 placeholder="Some people believe that..."
-                className="mt-2 h-11 rounded-xl bg-muted/60"
+                className="mt-2 min-h-[92px] rounded-xl bg-muted/60"
               />
             </div>
             <div>
               <div className="flex items-center justify-between gap-3">
                 <label className="text-sm font-medium" htmlFor="essay">
-                  Bài làm (Essay Content)
+                  Bài làm của bạn (Essay Content)
                 </label>
                 <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
                   {wordCount} từ
@@ -198,7 +245,10 @@ function Index() {
                   />
                 </div>
                 {c.comment && (
-                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{c.comment}</p>
+                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                    <span className="font-semibold text-foreground">Nhận xét (VN): </span>
+                    {c.comment}
+                  </p>
                 )}
               </div>
             ))}
@@ -209,7 +259,7 @@ function Index() {
       {result && (
         <div className="mt-6 space-y-6">
           <div className="surface p-6">
-            <h2 className="text-lg font-bold">Highlight lỗi sai</h2>
+            <h2 className="text-lg font-bold">Sửa lỗi chi tiết &amp; giải thích tiếng Việt</h2>
             <div className="mt-5 space-y-4">
               {result.errors?.map((e, i) => (
                 <div key={i} className="rounded-xl border border-border bg-muted/40 p-4">
@@ -219,9 +269,59 @@ function Index() {
                   <p className="mt-2 rounded-lg bg-success-soft px-3 py-2 text-sm text-success">
                     {e.fixed}
                   </p>
-                  {e.note && <p className="mt-2 text-xs text-muted-foreground">{e.note}</p>}
+                  {e.note && (
+                    <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                      <span className="font-semibold text-foreground">Giải thích: </span>
+                      {e.note}
+                    </p>
+                  )}
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Side-by-side comparison */}
+          <div className="surface p-6">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <Wand2 className="h-4 w-4 text-primary" />
+                <h2 className="text-lg font-bold">So sánh: Bài gốc vs Bài mẫu Band 8.0+</h2>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Button variant="outline" className="rounded-full" onClick={copyUpgraded}>
+                  <Copy className="h-4 w-4" />
+                  Copy bài mẫu Band 8.0+
+                </Button>
+                <Button variant="outline" className="rounded-full" onClick={saveEssay}>
+                  <BookmarkPlus className="h-4 w-4" />
+                  Lưu bài viết
+                </Button>
+              </div>
+            </div>
+
+            <div className="mt-5 grid gap-4 lg:grid-cols-2">
+              <div className="rounded-xl border border-danger/25 bg-danger-soft/40 p-5">
+                <h3 className="text-sm font-semibold text-danger">Bài gốc của bạn (lỗi màu đỏ)</h3>
+                <div className="mt-3 text-sm leading-7 whitespace-pre-line">
+                  {highlight(
+                    submitted,
+                    (result.errors ?? []).map((e) => e.wrong),
+                    "bg-danger/15 text-danger rounded px-0.5",
+                  )}
+                </div>
+              </div>
+              <div className="rounded-xl border border-success/25 bg-success-soft/40 p-5">
+                <h3 className="text-sm font-semibold text-success">
+                  Bài mẫu Band 8.0+ (từ vựng nâng cấp màu xanh)
+                </h3>
+                <div className="mt-3 text-sm leading-7 whitespace-pre-line">
+                  {highlight(
+                    result.upgraded,
+                    (result.vocabulary ?? []).map((v) => v.upgraded),
+                    "bg-success/15 text-success font-semibold rounded px-0.5",
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -258,22 +358,6 @@ function Index() {
                   ))}
                 </tbody>
               </table>
-            </div>
-          </div>
-
-          <div className="surface p-6">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <Wand2 className="h-4 w-4 text-primary" />
-                <h2 className="text-lg font-bold">Bài viết nâng cấp mẫu (Band 7.5–8.0)</h2>
-              </div>
-              <Button variant="outline" className="rounded-full" onClick={saveEssay}>
-                <BookmarkPlus className="h-4 w-4" />
-                Lưu bài mẫu
-              </Button>
-            </div>
-            <div className="mt-5 rounded-xl border border-border bg-muted/40 p-5 text-sm leading-7 whitespace-pre-line">
-              {result.upgraded}
             </div>
           </div>
         </div>
