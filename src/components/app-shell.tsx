@@ -23,9 +23,9 @@ import { VipDialog } from "@/components/vip-dialog";
 import { cn } from "@/lib/utils";
 
 const FEATURES = [
-  { label: "Chấm Writing AI", icon: PenLine, locked: false },
-  { label: "Luyện Speaking AI", icon: Mic, locked: true },
-  { label: "Kho Đề Cam & Forecast / Actual Test", icon: FolderOpen, locked: true },
+  { label: "Chấm Writing AI", icon: PenLine, to: "/", locked: false },
+  { label: "Luyện Speaking AI", icon: Mic, to: "/speaking", locked: true },
+  { label: "Kho Đề Cam & Forecast / Actual Test", icon: FolderOpen, to: "/forecast", locked: true },
 ];
 
 const NAV: { title: string; items: { to: string; label: string; icon: typeof History }[] }[] = [
@@ -91,11 +91,10 @@ export function AppShell({ children }: { children: ReactNode }) {
               {FEATURES.map((f) =>
                 f.locked ? (
                   <li key={f.label}>
-                    <button
-                      onClick={() => {
-                        setMobileOpen(false);
-                        setVipOpen(true);
-                      }}
+                    <Link
+                      to={f.to}
+                      onClick={() => setMobileOpen(false)}
+                      activeProps={{ className: "bg-primary/10 text-primary font-semibold" }}
                       className="flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-foreground/60 transition-colors hover:bg-muted"
                     >
                       <f.icon className="mt-0.5 h-4 w-4 shrink-0" />
@@ -106,12 +105,12 @@ export function AppShell({ children }: { children: ReactNode }) {
                           Gói VIP
                         </span>
                       </span>
-                    </button>
+                    </Link>
                   </li>
                 ) : (
                   <li key={f.label}>
                     <Link
-                      to="/"
+                      to={f.to}
                       onClick={() => setMobileOpen(false)}
                       activeOptions={{ exact: true }}
                       activeProps={{ className: "bg-primary/10 text-primary font-semibold" }}

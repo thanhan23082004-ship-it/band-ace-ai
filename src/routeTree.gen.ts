@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EssaysRouteImport } from './routes/essays'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ForecastRouteImport } from './routes/forecast'
 import { Route as GuideRouteImport } from './routes/guide'
 import { Route as HistoryRouteImport } from './routes/history'
+import { Route as SpeakingRouteImport } from './routes/speaking'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as VocabBankRouteImport } from './routes/vocab-bank'
 import { Route as VocabularyRouteImport } from './routes/vocabulary'
@@ -33,6 +35,11 @@ const FaqRoute = FaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ForecastRoute = ForecastRouteImport.update({
+  id: '/forecast',
+  path: '/forecast',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GuideRoute = GuideRouteImport.update({
   id: '/guide',
   path: '/guide',
@@ -41,6 +48,11 @@ const GuideRoute = GuideRouteImport.update({
 const HistoryRoute = HistoryRouteImport.update({
   id: '/history',
   path: '/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SpeakingRoute = SpeakingRouteImport.update({
+  id: '/speaking',
+  path: '/speaking',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SupportRoute = SupportRouteImport.update({
@@ -63,8 +75,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/essays': typeof EssaysRoute
   '/faq': typeof FaqRoute
+  '/forecast': typeof ForecastRoute
   '/guide': typeof GuideRoute
   '/history': typeof HistoryRoute
+  '/speaking': typeof SpeakingRoute
   '/support': typeof SupportRoute
   '/vocab-bank': typeof VocabBankRoute
   '/vocabulary': typeof VocabularyRoute
@@ -73,8 +87,10 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/essays': typeof EssaysRoute
   '/faq': typeof FaqRoute
+  '/forecast': typeof ForecastRoute
   '/guide': typeof GuideRoute
   '/history': typeof HistoryRoute
+  '/speaking': typeof SpeakingRoute
   '/support': typeof SupportRoute
   '/vocab-bank': typeof VocabBankRoute
   '/vocabulary': typeof VocabularyRoute
@@ -84,8 +100,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/essays': typeof EssaysRoute
   '/faq': typeof FaqRoute
+  '/forecast': typeof ForecastRoute
   '/guide': typeof GuideRoute
   '/history': typeof HistoryRoute
+  '/speaking': typeof SpeakingRoute
   '/support': typeof SupportRoute
   '/vocab-bank': typeof VocabBankRoute
   '/vocabulary': typeof VocabularyRoute
@@ -96,8 +114,10 @@ export interface FileRouteTypes {
     | '/'
     | '/essays'
     | '/faq'
+    | '/forecast'
     | '/guide'
     | '/history'
+    | '/speaking'
     | '/support'
     | '/vocab-bank'
     | '/vocabulary'
@@ -106,8 +126,10 @@ export interface FileRouteTypes {
     | '/'
     | '/essays'
     | '/faq'
+    | '/forecast'
     | '/guide'
     | '/history'
+    | '/speaking'
     | '/support'
     | '/vocab-bank'
     | '/vocabulary'
@@ -116,8 +138,10 @@ export interface FileRouteTypes {
     | '/'
     | '/essays'
     | '/faq'
+    | '/forecast'
     | '/guide'
     | '/history'
+    | '/speaking'
     | '/support'
     | '/vocab-bank'
     | '/vocabulary'
@@ -127,8 +151,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   EssaysRoute: typeof EssaysRoute
   FaqRoute: typeof FaqRoute
+  ForecastRoute: typeof ForecastRoute
   GuideRoute: typeof GuideRoute
   HistoryRoute: typeof HistoryRoute
+  SpeakingRoute: typeof SpeakingRoute
   SupportRoute: typeof SupportRoute
   VocabBankRoute: typeof VocabBankRoute
   VocabularyRoute: typeof VocabularyRoute
@@ -157,6 +183,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/forecast': {
+      id: '/forecast'
+      path: '/forecast'
+      fullPath: '/forecast'
+      preLoaderRoute: typeof ForecastRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/guide': {
       id: '/guide'
       path: '/guide'
@@ -169,6 +202,13 @@ declare module '@tanstack/react-router' {
       path: '/history'
       fullPath: '/history'
       preLoaderRoute: typeof HistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/speaking': {
+      id: '/speaking'
+      path: '/speaking'
+      fullPath: '/speaking'
+      preLoaderRoute: typeof SpeakingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/support': {
@@ -199,8 +239,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   EssaysRoute: EssaysRoute,
   FaqRoute: FaqRoute,
+  ForecastRoute: ForecastRoute,
   GuideRoute: GuideRoute,
   HistoryRoute: HistoryRoute,
+  SpeakingRoute: SpeakingRoute,
   SupportRoute: SupportRoute,
   VocabBankRoute: VocabBankRoute,
   VocabularyRoute: VocabularyRoute,
