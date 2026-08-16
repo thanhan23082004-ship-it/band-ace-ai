@@ -8,6 +8,7 @@ import {
   HelpCircle,
   History,
   LifeBuoy,
+  Library,
   Lock,
   Menu,
   Mic,
@@ -28,6 +29,10 @@ const FEATURES = [
 ];
 
 const NAV: { title: string; items: { to: string; label: string; icon: typeof History }[] }[] = [
+  {
+    title: "Học tập",
+    items: [{ to: "/vocab-bank", label: "Từ Vựng Band 7.0+", icon: Library }],
+  },
   {
     title: "Account",
     items: [
