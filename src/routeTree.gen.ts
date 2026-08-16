@@ -14,6 +14,7 @@ import { Route as EssaysRouteImport } from './routes/essays'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as GuideRouteImport } from './routes/guide'
 import { Route as HistoryRouteImport } from './routes/history'
+import { Route as SpeakingRouteImport } from './routes/speaking'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as VocabBankRouteImport } from './routes/vocab-bank'
 import { Route as VocabularyRouteImport } from './routes/vocabulary'
@@ -43,6 +44,11 @@ const HistoryRoute = HistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SpeakingRoute = SpeakingRouteImport.update({
+  id: '/speaking',
+  path: '/speaking',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SupportRoute = SupportRouteImport.update({
   id: '/support',
   path: '/support',
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/guide': typeof GuideRoute
   '/history': typeof HistoryRoute
+  '/speaking': typeof SpeakingRoute
   '/support': typeof SupportRoute
   '/vocab-bank': typeof VocabBankRoute
   '/vocabulary': typeof VocabularyRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/guide': typeof GuideRoute
   '/history': typeof HistoryRoute
+  '/speaking': typeof SpeakingRoute
   '/support': typeof SupportRoute
   '/vocab-bank': typeof VocabBankRoute
   '/vocabulary': typeof VocabularyRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/guide': typeof GuideRoute
   '/history': typeof HistoryRoute
+  '/speaking': typeof SpeakingRoute
   '/support': typeof SupportRoute
   '/vocab-bank': typeof VocabBankRoute
   '/vocabulary': typeof VocabularyRoute
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/guide'
     | '/history'
+    | '/speaking'
     | '/support'
     | '/vocab-bank'
     | '/vocabulary'
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/guide'
     | '/history'
+    | '/speaking'
     | '/support'
     | '/vocab-bank'
     | '/vocabulary'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/guide'
     | '/history'
+    | '/speaking'
     | '/support'
     | '/vocab-bank'
     | '/vocabulary'
@@ -129,6 +141,7 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   GuideRoute: typeof GuideRoute
   HistoryRoute: typeof HistoryRoute
+  SpeakingRoute: typeof SpeakingRoute
   SupportRoute: typeof SupportRoute
   VocabBankRoute: typeof VocabBankRoute
   VocabularyRoute: typeof VocabularyRoute
@@ -171,6 +184,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/speaking': {
+      id: '/speaking'
+      path: '/speaking'
+      fullPath: '/speaking'
+      preLoaderRoute: typeof SpeakingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/support': {
       id: '/support'
       path: '/support'
@@ -201,6 +221,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   GuideRoute: GuideRoute,
   HistoryRoute: HistoryRoute,
+  SpeakingRoute: SpeakingRoute,
   SupportRoute: SupportRoute,
   VocabBankRoute: VocabBankRoute,
   VocabularyRoute: VocabularyRoute,
