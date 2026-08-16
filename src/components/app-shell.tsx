@@ -23,9 +23,9 @@ import { VipDialog } from "@/components/vip-dialog";
 import { cn } from "@/lib/utils";
 
 const FEATURES = [
-  { label: "Chấm Writing AI", icon: PenLine, locked: false },
-  { label: "Luyện Speaking AI", icon: Mic, locked: true },
-  { label: "Kho Đề Cam & Forecast / Actual Test", icon: FolderOpen, locked: true },
+  { label: "Chấm Writing AI", icon: PenLine, to: "/", locked: false },
+  { label: "Luyện Speaking AI", icon: Mic, to: "/speaking", locked: true },
+  { label: "Kho Đề Cam & Forecast / Actual Test", icon: FolderOpen, to: "/forecast", locked: true },
 ];
 
 const NAV: { title: string; items: { to: string; label: string; icon: typeof History }[] }[] = [

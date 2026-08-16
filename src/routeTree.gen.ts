@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EssaysRouteImport } from './routes/essays'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ForecastRouteImport } from './routes/forecast'
 import { Route as GuideRouteImport } from './routes/guide'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as SpeakingRouteImport } from './routes/speaking'
@@ -32,6 +33,11 @@ const EssaysRoute = EssaysRouteImport.update({
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForecastRoute = ForecastRouteImport.update({
+  id: '/forecast',
+  path: '/forecast',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GuideRoute = GuideRouteImport.update({
@@ -69,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/essays': typeof EssaysRoute
   '/faq': typeof FaqRoute
+  '/forecast': typeof ForecastRoute
   '/guide': typeof GuideRoute
   '/history': typeof HistoryRoute
   '/speaking': typeof SpeakingRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/essays': typeof EssaysRoute
   '/faq': typeof FaqRoute
+  '/forecast': typeof ForecastRoute
   '/guide': typeof GuideRoute
   '/history': typeof HistoryRoute
   '/speaking': typeof SpeakingRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/essays': typeof EssaysRoute
   '/faq': typeof FaqRoute
+  '/forecast': typeof ForecastRoute
   '/guide': typeof GuideRoute
   '/history': typeof HistoryRoute
   '/speaking': typeof SpeakingRoute
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
     | '/'
     | '/essays'
     | '/faq'
+    | '/forecast'
     | '/guide'
     | '/history'
     | '/speaking'
@@ -116,6 +126,7 @@ export interface FileRouteTypes {
     | '/'
     | '/essays'
     | '/faq'
+    | '/forecast'
     | '/guide'
     | '/history'
     | '/speaking'
@@ -127,6 +138,7 @@ export interface FileRouteTypes {
     | '/'
     | '/essays'
     | '/faq'
+    | '/forecast'
     | '/guide'
     | '/history'
     | '/speaking'
@@ -139,6 +151,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   EssaysRoute: typeof EssaysRoute
   FaqRoute: typeof FaqRoute
+  ForecastRoute: typeof ForecastRoute
   GuideRoute: typeof GuideRoute
   HistoryRoute: typeof HistoryRoute
   SpeakingRoute: typeof SpeakingRoute
@@ -168,6 +181,13 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forecast': {
+      id: '/forecast'
+      path: '/forecast'
+      fullPath: '/forecast'
+      preLoaderRoute: typeof ForecastRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/guide': {
@@ -219,6 +239,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   EssaysRoute: EssaysRoute,
   FaqRoute: FaqRoute,
+  ForecastRoute: ForecastRoute,
   GuideRoute: GuideRoute,
   HistoryRoute: HistoryRoute,
   SpeakingRoute: SpeakingRoute,
