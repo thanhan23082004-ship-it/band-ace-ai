@@ -131,30 +131,49 @@ function Index() {
 
   return (
     <main className="mx-auto max-w-6xl px-5 pb-24">
-      <section className="py-14 text-center sm:py-20">
-        <span className="inline-flex items-center gap-2 rounded-full border border-border bg-muted px-3.5 py-1.5 text-xs font-medium text-muted-foreground">
-          <Sparkles className="h-3.5 w-3.5 text-primary" />
-          AI Chấm Bài &amp; Giải Thích Chi Tiết Bằng Tiếng Việt
-        </span>
-        <h1 className="mx-auto mt-6 max-w-3xl text-4xl leading-[1.08] font-extrabold sm:text-5xl md:text-[3.4rem]">
-          Trợ Lý AI Chấm Bài IELTS — Giải Thích Chi Tiết Bằng Tiếng Việt
+      {/* Hero + Feature Showcase */}
+      <section className="pt-10 pb-8 text-center sm:pt-14 sm:pb-10">
+        <h1 className="mx-auto max-w-3xl text-[1.75rem] leading-[1.12] font-extrabold tracking-tight sm:text-4xl md:text-[2.5rem]">
+          Nền Tảng Luyện Thi IELTS Toàn Diện Cùng Trợ Lý AI
         </h1>
-        <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
-          Chấm chuẩn Barem IDP/BC, chỉ ra lỗi sai và gợi ý bài mẫu Band 8.0+ ngay lập tức.
+        <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
+          Chọn tính năng bạn muốn trải nghiệm ngay bên dưới:
         </p>
-        <Button
-          onClick={() =>
-            document.getElementById("essay")?.scrollIntoView({ behavior: "smooth", block: "center" })
-          }
-          className="mt-7 h-12 rounded-xl px-7 text-[15px] font-semibold shadow-sm"
-        >
-          Bắt Đầu Chấm Bài
-          <ArrowRight className="h-4 w-4" />
-        </Button>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <FeatureCard
+            icon={PenLine}
+            iconColor="bg-primary text-primary-foreground"
+            title="Chấm &amp; Sửa Bài Writing AI"
+            description="Chấm chuẩn Barem IDP/BC, sửa lỗi ngữ pháp &amp; giải thích chi tiết bằng Tiếng Việt."
+            cta="Vào Chấm Writing"
+            onClick={() =>
+              document.getElementById("writing-tool")?.scrollIntoView({ behavior: "smooth", block: "start" })
+            }
+          />
+          <FeatureCard
+            icon={Mic}
+            iconColor="bg-vip text-vip-foreground"
+            title="Luyện Speaking AI"
+            description="Thu âm trả lời từng câu, sửa phát âm và chấm điểm kỹ năng nói."
+            badge="Gói VIP 49k"
+            cta="Trải Nghiệm Speaking"
+            to="/speaking"
+          />
+          <FeatureCard
+            icon={FolderOpen}
+            iconColor="bg-gradient-to-br from-sky-400 to-blue-600 text-white"
+            title="Kho Đề Forecast &amp; Cam 15-19"
+            description="Tổng hợp bộ đề Forecast Quý mới nhất kèm đáp án và bài mẫu Band 8.0+."
+            cta="Xem Kho Đề"
+            to="/forecast"
+          />
+        </div>
       </section>
 
-
-      <div className="grid gap-6 lg:grid-cols-2">
+      {/* Writing tool anchor */}
+      <div id="writing-tool" className="scroll-mt-28">
+        <div className="grid gap-6 lg:grid-cols-2">
         {/* LEFT: input */}
         <div className="surface p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
