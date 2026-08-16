@@ -66,6 +66,63 @@ function highlight(text: string, phrases: string[], className: string): ReactNod
   );
 }
 
+function FeatureCard({
+  icon: Icon,
+  iconColor,
+  title,
+  description,
+  badge,
+  cta,
+  to,
+  onClick,
+}: {
+  icon: React.ElementType;
+  iconColor: string;
+  title: string;
+  description: string;
+  badge?: string;
+  cta: string;
+  to?: string;
+  onClick?: () => void;
+}) {
+  const body = (
+    <>
+      <div className="flex items-start justify-between gap-3">
+        <span className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-xl shadow-sm", iconColor)}>
+          <Icon className="h-5 w-5" />
+        </span>
+        {badge && (
+          <span className="rounded-full bg-vip/15 px-2.5 py-1 text-[11px] font-bold text-vip-foreground">
+            {badge}
+          </span>
+        )}
+      </div>
+      <h3 className="mt-4 text-base font-bold">{title}</h3>
+      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{description}</p>
+      <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
+        {cta}
+        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+      </span>
+    </>
+  );
+
+  const className = cn(
+    "group surface relative flex flex-col items-start p-5 text-left transition-all duration-300",
+    "hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 hover:border-primary/30",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+  );
+
+  return to ? (
+    <Link to={to} className={className}>
+      {body}
+    </Link>
+  ) : (
+    <button onClick={onClick} className={className}>
+      {body}
+    </button>
+  );
+}
+
 function Index() {
   const [topic, setTopic] = useState("");
   const [essay, setEssay] = useState("");
