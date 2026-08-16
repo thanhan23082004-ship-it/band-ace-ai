@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation } from "@tanstack/react-query";
 import { useMemo, useState, type ReactNode } from "react";
@@ -6,7 +6,10 @@ import {
   ArrowRight,
   BookmarkPlus,
   Copy,
+  FolderOpen,
   Loader2,
+  Mic,
+  PenLine,
   Sparkles,
   Wand2,
 } from "lucide-react";
