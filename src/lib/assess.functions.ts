@@ -14,36 +14,40 @@ export type Assessment = {
   upgraded: string;
 };
 
-const SYSTEM = `You are a senior IELTS Writing examiner. Grade the essay strictly per the official IELTS band descriptors.
-Return ONLY valid JSON (no markdown fences) with this exact shape:
+const SYSTEM = `Bạn là Giám khảo IELTS Quốc tế (IDP/British Council) với 15 năm kinh nghiệm. Chấm bài Writing theo đúng Barem Band Descriptors chính thức, nghiêm khắc và nhất quán.
+Trả về DUY NHẤT một JSON hợp lệ (không markdown, không giải thích ngoài JSON) theo đúng shape sau:
 {
-  "overall": number (1.0-9.0, .5 steps),
+  "overall_band": number (1.0-9.0, bước 0.5),
   "criteria": [
-    {"key":"task","name":"Task Response","score":number,"comment":"string (Vietnamese, 2-3 sentences)"},
+    {"key":"task","name":"Task Response","score":number,"comment":"nhận xét bằng Tiếng Việt, 2-3 câu"},
     {"key":"coherence","name":"Coherence & Cohesion","score":number,"comment":"..."},
     {"key":"lexical","name":"Lexical Resource","score":number,"comment":"..."},
     {"key":"grammar","name":"Grammatical Range & Accuracy","score":number,"comment":"..."}
   ],
-  "errors": [{"wrong":"exact sentence from essay","fixed":"corrected sentence","note":"short Vietnamese explanation"}],
-  "vocabulary": [{"basic":"word from essay","upgraded":"Band 8.0+ word/collocation","example":"short English sentence"}],
-  "upgraded": "a complete rewritten Band 7.5-8.0 essay in English"
+  "errors": [{"wrong":"câu gốc y nguyên trong bài","fixed":"câu sửa chuẩn","note":"lý do sai, giải thích bằng Tiếng Việt"}],
+  "vocabulary": [{"basic":"từ cơ bản trong bài","upgraded":"từ/collocation Band 8.0+","example":"câu ví dụ tiếng Anh ngắn"}],
+  "upgraded": "bài mẫu hoàn chỉnh đạt Band 8.0+ bằng tiếng Anh"
 }
-Give 4-8 items in "errors" and exactly 5 items in "vocabulary". Comments and notes in Vietnamese.`;
+Cho 4-8 phần tử trong "errors" và đúng 5 phần tử trong "vocabulary". Mọi nhận xét và lý do sai phải viết bằng Tiếng Việt.`;
+
+type RawResult = Partial<Assessment> & { overall_band?: number };
 
 export const assessEssay = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => inputSchema.parse(data))
   .handler(async ({ data }): Promise<Assessment> => {
-    const apiKey = process.env["LOVABLE_API_KEY"];
-    if (!apiKey) throw new Error("AI chưa được cấu hình.");
+    const apiKey = process.env["OPENAI_API_KEY"];
+    if (!apiKey) throw new Error("Chưa cấu hình OPENAI_API_KEY.");
 
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: "gpt-4o-mini",
+        temperature: 0.2,
+        response_format: { type: "json_object" },
         messages: [
           { role: "system", content: SYSTEM },
           {
@@ -56,9 +60,11 @@ export const assessEssay = createServerFn({ method: "POST" })
 
     if (!res.ok) {
       const body = await res.text();
-      if (res.status === 429) throw new Error("Hệ thống đang quá tải, vui lòng thử lại sau ít phút.");
-      if (res.status === 402) throw new Error("Đã hết credit AI, vui lòng nạp thêm để tiếp tục.");
-      throw new Error(`Chấm bài thất bại [${res.status}]: ${body}`);
+      console.error("OpenAI error", res.status, body);
+      if (res.status === 429)
+        throw new Error("OpenAI đang quá tải hoặc hết quota, vui lòng thử lại sau ít phút.");
+      if (res.status === 401) throw new Error("OPENAI_API_KEY không hợp lệ.");
+      throw new Error(`Chấm bài thất bại [${res.status}].`);
     }
 
     const payload = (await res.json()) as {
@@ -71,14 +77,22 @@ export const assessEssay = createServerFn({ method: "POST" })
       .replace(/```$/, "")
       .trim();
 
+    let parsed: RawResult;
     try {
-      return JSON.parse(cleaned) as Assessment;
+      parsed = JSON.parse(cleaned) as RawResult;
     } catch {
       const start = cleaned.indexOf("{");
       const end = cleaned.lastIndexOf("}");
-      if (start >= 0 && end > start) {
-        return JSON.parse(cleaned.slice(start, end + 1)) as Assessment;
-      }
-      throw new Error("Không đọc được kết quả từ AI, vui lòng thử lại.");
+      if (start < 0 || end <= start)
+        throw new Error("Không đọc được kết quả từ AI, vui lòng thử lại.");
+      parsed = JSON.parse(cleaned.slice(start, end + 1)) as RawResult;
     }
+
+    return {
+      overall: Number(parsed.overall ?? parsed.overall_band ?? 0),
+      criteria: parsed.criteria ?? [],
+      errors: parsed.errors ?? [],
+      vocabulary: parsed.vocabulary ?? [],
+      upgraded: parsed.upgraded ?? "",
+    };
   });
