@@ -79,11 +79,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "IELTS For You — AI chấm bài IELTS Writing" },
+      { name: "description", content: "Trợ lý AI chấm bài IELTS Writing, giải thích chi tiết bằng tiếng Việt." },
+      { name: "author", content: "IELTS For You" },
+      { property: "og:title", content: "IELTS For You — AI chấm bài IELTS Writing" },
+      { property: "og:description", content: "Chấm chuẩn barem IDP/BC, chỉ ra lỗi sai và gợi ý bài mẫu Band 8.0+." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
@@ -110,7 +110,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="vi">
       <head>
         <HeadContent />
       </head>

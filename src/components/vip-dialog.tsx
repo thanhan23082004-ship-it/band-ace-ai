@@ -12,6 +12,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { KEYS } from "@/lib/storage";
+import { supabase } from "@/integrations/supabase/client";
 
 const BANK = {
   bank: "MB Bank (Ngân hàng Quân Đội)",
@@ -32,18 +33,29 @@ export function VipDialog({
   const [email, setEmail] = useState("");
   const [sending, setSending] = useState(false);
 
-  const submit = () => {
-    if (!/^\S+@\S+\.\S+$/.test(email.trim())) {
+  const submit = async () => {
+    const value = email.trim();
+    if (!/^\S+@\S+\.\S+$/.test(value)) {
       toast.error("Vui lòng nhập email hợp lệ.");
       return;
     }
     setSending(true);
-    setTimeout(() => {
-      window.localStorage.setItem(KEYS.vip, email.trim());
-      setSending(false);
-      onOpenChange(false);
-      toast.success("Đã ghi nhận! VIP sẽ được kích hoạt sau khi đối chiếu chuyển khoản.");
-    }, 700);
+    const { error } = await supabase
+      .from("vip_requests")
+      .insert({ email: value, amount: 49000, is_vip: false });
+    setSending(false);
+
+    if (error) {
+      console.error(error);
+      toast.error("Không gửi được yêu cầu, vui lòng thử lại hoặc liên hệ hỗ trợ.");
+      return;
+    }
+
+    window.localStorage.setItem(KEYS.vip, value);
+    onOpenChange(false);
+    toast.success(
+      "Hệ thống đã ghi nhận! VIP sẽ được kích hoạt tự động trong 1-5 phút sau khi ngân hàng đối soát giao dịch.",
+    );
   };
 
   return (

@@ -137,12 +137,22 @@ function Index() {
           AI Chấm Bài &amp; Giải Thích Chi Tiết Bằng Tiếng Việt
         </span>
         <h1 className="mx-auto mt-6 max-w-3xl text-4xl leading-[1.08] font-extrabold sm:text-5xl md:text-[3.4rem]">
-          Chấm &amp; Sửa Bài IELTS Writing Chuẩn Band Giám Khảo Trong 10 Giây
+          Trợ Lý AI Chấm Bài IELTS — Giải Thích Chi Tiết Bằng Tiếng Việt
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
-          Phân tích chi tiết 4 tiêu chí, chỉ rõ lỗi sai ngữ pháp và gợi ý từ vựng Band 8.0+.
+          Chấm chuẩn Barem IDP/BC, chỉ ra lỗi sai và gợi ý bài mẫu Band 8.0+ ngay lập tức.
         </p>
+        <Button
+          onClick={() =>
+            document.getElementById("essay")?.scrollIntoView({ behavior: "smooth", block: "center" })
+          }
+          className="mt-7 h-12 rounded-xl px-7 text-[15px] font-semibold shadow-sm"
+        >
+          Bắt Đầu Chấm Bài
+          <ArrowRight className="h-4 w-4" />
+        </Button>
       </section>
+
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* LEFT: input */}
@@ -189,7 +199,7 @@ function Index() {
               {mutation.isPending ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Đang phân tích...
+                  AI đang phân tích bài viết...
                 </>
               ) : (
                 <>
