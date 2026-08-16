@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Timer40 } from "@/components/timer-40";
 import { assessEssay, type Assessment } from "@/lib/assess.functions";
+import { cn } from "@/lib/utils";
 import { KEYS, addItem, newId } from "@/lib/storage";
 
 export const Route = createFileRoute("/")({
