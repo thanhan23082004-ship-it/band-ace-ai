@@ -232,6 +232,19 @@ function Index() {
         </div>
       </section>
 
+      {/* Learning dashboard */}
+      <section className="mb-10 grid gap-6 lg:grid-cols-3">
+        <div className="space-y-6 lg:col-span-2">
+          <SkillPerformance />
+          <VipComparison />
+        </div>
+        <div className="lg:col-span-1">
+          <WeeklyLeaderboard />
+        </div>
+      </section>
+
+
+
       {/* Writing tool anchor */}
       <div id="writing-tool" className="scroll-mt-28">
         <div className="grid gap-6 lg:grid-cols-2">
