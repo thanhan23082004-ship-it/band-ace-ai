@@ -19,6 +19,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Timer40 } from "@/components/timer-40";
+import { SkillPerformance } from "@/components/skill-performance";
+import { VipComparison } from "@/components/vip-comparison";
+import { WeeklyLeaderboard } from "@/components/weekly-leaderboard";
+
 import { assessEssay, type Assessment } from "@/lib/assess.functions";
 import { cn } from "@/lib/utils";
 import { KEYS, addItem, newId } from "@/lib/storage";
@@ -231,6 +235,19 @@ function Index() {
           />
         </div>
       </section>
+
+      {/* Learning dashboard */}
+      <section className="mb-10 grid gap-6 lg:grid-cols-3">
+        <div className="space-y-6 lg:col-span-2">
+          <SkillPerformance />
+          <VipComparison />
+        </div>
+        <div className="lg:col-span-1">
+          <WeeklyLeaderboard />
+        </div>
+      </section>
+
+
 
       {/* Writing tool anchor */}
       <div id="writing-tool" className="scroll-mt-28">

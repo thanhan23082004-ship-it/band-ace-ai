@@ -20,6 +20,8 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { VipDialog } from "@/components/vip-dialog";
+import { ThemeToggle } from "@/components/theme-toggle";
+
 import { cn } from "@/lib/utils";
 
 const FEATURES = [
@@ -199,13 +201,17 @@ export function AppShell({ children }: { children: ReactNode }) {
                 AI Chấm Bài &amp; Giải Thích Chi Tiết Bằng Tiếng Việt
               </span>
             </div>
-            <Button
-              onClick={() => setVipOpen(true)}
-              className="shrink-0 rounded-full bg-vip px-4 text-vip-foreground shadow-sm hover:bg-vip/90"
-            >
-              <Crown className="h-4 w-4" />
-              Nâng cấp VIP · 49k/tháng
-            </Button>
+            <div className="flex shrink-0 items-center gap-2">
+              <ThemeToggle />
+              <Button
+                onClick={() => setVipOpen(true)}
+                className="shrink-0 rounded-full bg-vip px-4 text-vip-foreground shadow-sm hover:bg-vip/90"
+              >
+                <Crown className="h-4 w-4" />
+                Nâng cấp VIP · 49k/tháng
+              </Button>
+            </div>
+
           </div>
         </header>
         {children}
