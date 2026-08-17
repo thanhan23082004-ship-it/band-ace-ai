@@ -19,6 +19,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Timer40 } from "@/components/timer-40";
+import { SkillPerformance } from "@/components/skill-performance";
+import { VipComparison } from "@/components/vip-comparison";
+import { WeeklyLeaderboard } from "@/components/weekly-leaderboard";
+
 import { assessEssay, type Assessment } from "@/lib/assess.functions";
 import { cn } from "@/lib/utils";
 import { KEYS, addItem, newId } from "@/lib/storage";
