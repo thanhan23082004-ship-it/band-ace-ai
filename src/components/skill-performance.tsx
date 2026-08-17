@@ -64,13 +64,13 @@ function SkillBlock({
 
         <div className="h-[190px] w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <RadarChart data={data} outerRadius="72%">
+            <RadarChart data={data} outerRadius={70} cx="50%" cy="50%">
               <PolarGrid stroke="var(--color-border)" />
               <PolarAngleAxis
                 dataKey="key"
                 tick={{ fill: "var(--color-muted-foreground)", fontSize: 11, fontWeight: 700 }}
               />
-              <PolarRadiusAxis domain={[0, 9]} tick={false} axisLine={false} />
+              <PolarRadiusAxis angle={90} domain={[0, 9]} tick={false} axisLine={false} tickCount={4} />
               <Radar
                 dataKey="value"
                 stroke="var(--color-neon)"
