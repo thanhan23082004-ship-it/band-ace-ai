@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CambridgeRouteImport } from './routes/cambridge'
 import { Route as EssaysRouteImport } from './routes/essays'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ForecastRouteImport } from './routes/forecast'
@@ -23,6 +24,11 @@ import { Route as VocabularyRouteImport } from './routes/vocabulary'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CambridgeRoute = CambridgeRouteImport.update({
+  id: '/cambridge',
+  path: '/cambridge',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EssaysRoute = EssaysRouteImport.update({
@@ -73,6 +79,7 @@ const VocabularyRoute = VocabularyRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cambridge': typeof CambridgeRoute
   '/essays': typeof EssaysRoute
   '/faq': typeof FaqRoute
   '/forecast': typeof ForecastRoute
@@ -85,6 +92,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cambridge': typeof CambridgeRoute
   '/essays': typeof EssaysRoute
   '/faq': typeof FaqRoute
   '/forecast': typeof ForecastRoute
@@ -98,6 +106,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cambridge': typeof CambridgeRoute
   '/essays': typeof EssaysRoute
   '/faq': typeof FaqRoute
   '/forecast': typeof ForecastRoute
@@ -112,6 +121,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/cambridge'
     | '/essays'
     | '/faq'
     | '/forecast'
@@ -124,6 +134,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/cambridge'
     | '/essays'
     | '/faq'
     | '/forecast'
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/cambridge'
     | '/essays'
     | '/faq'
     | '/forecast'
@@ -149,6 +161,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CambridgeRoute: typeof CambridgeRoute
   EssaysRoute: typeof EssaysRoute
   FaqRoute: typeof FaqRoute
   ForecastRoute: typeof ForecastRoute
@@ -167,6 +180,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cambridge': {
+      id: '/cambridge'
+      path: '/cambridge'
+      fullPath: '/cambridge'
+      preLoaderRoute: typeof CambridgeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/essays': {
@@ -237,6 +257,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CambridgeRoute: CambridgeRoute,
   EssaysRoute: EssaysRoute,
   FaqRoute: FaqRoute,
   ForecastRoute: ForecastRoute,
