@@ -119,6 +119,9 @@
   --danger-soft: oklch(0.96 0.03 25);
   --vip: oklch(0.72 0.16 62);
   --vip-foreground: oklch(0.22 0.05 60);
+  --neon: oklch(0.62 0.16 170);
+  --neon-glow: oklch(0.62 0.16 170 / 0.25);
+
 }
 
 
