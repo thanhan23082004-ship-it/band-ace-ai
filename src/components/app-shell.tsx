@@ -20,6 +20,8 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { VipDialog } from "@/components/vip-dialog";
+import { ThemeToggle } from "@/components/theme-toggle";
+
 import { cn } from "@/lib/utils";
 
 const FEATURES = [
