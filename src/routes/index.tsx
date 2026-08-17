@@ -4,9 +4,11 @@ import { useMutation } from "@tanstack/react-query";
 import { useMemo, useState, type ReactNode } from "react";
 import {
   ArrowRight,
+  BookOpen,
   BookmarkPlus,
   Copy,
   FolderOpen,
+  Library,
   Loader2,
   Mic,
   PenLine,
