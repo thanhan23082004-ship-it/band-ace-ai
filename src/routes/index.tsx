@@ -204,40 +204,57 @@ function Index() {
     <main className="mx-auto max-w-6xl px-5 pb-24">
       {/* Hero + Feature Showcase */}
       <section className="pt-10 pb-8 text-center sm:pt-14 sm:pb-10">
-        <h1 className="mx-auto max-w-3xl text-[1.75rem] leading-[1.12] font-extrabold tracking-tight sm:text-4xl md:text-[2.5rem]">
-          Nền Tảng Luyện Thi IELTS Toàn Diện Cùng Trợ Lý AI
+        <span className="mx-auto inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-bold text-primary">
+          <Sparkles className="h-3.5 w-3.5" />
+          Nền tảng luyện IELTS thông minh
+        </span>
+        <h1 className="mx-auto mt-4 max-w-3xl text-[1.75rem] leading-[1.12] font-extrabold tracking-tight sm:text-4xl md:text-[2.5rem]">
+          Mọi công cụ bạn cần để{" "}
+          <span className="hero-gradient">chinh phục IELTS</span>
         </h1>
         <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
-          Chọn tính năng bạn muốn trải nghiệm ngay bên dưới:
+          Từ chấm chữa AI đến kho đề khổng lồ — tất cả trong một hệ sinh thái học tập hiện đại, cá nhân hoá cho người Việt.
         </p>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <FeatureCard
             icon={PenLine}
-            iconColor="bg-primary text-primary-foreground"
+            iconColor="bg-feature-purple text-feature-purple-foreground"
             title="Chấm &amp; Sửa Bài Writing AI"
             description="Chấm chuẩn Barem IDP/BC, sửa lỗi ngữ pháp &amp; giải thích chi tiết bằng Tiếng Việt."
             cta="Vào Chấm Writing"
+            ctaColor="bg-feature-purple text-feature-purple-foreground hover:bg-feature-purple/90"
             onClick={() =>
               document.getElementById("writing-tool")?.scrollIntoView({ behavior: "smooth", block: "start" })
             }
           />
           <FeatureCard
             icon={Mic}
-            iconColor="bg-vip text-vip-foreground"
+            iconColor="bg-feature-green text-feature-green-foreground"
             title="Luyện Speaking AI"
             description="Thu âm trả lời từng câu, sửa phát âm và chấm điểm kỹ năng nói."
             badge="Gói VIP 49k"
             cta="Trải Nghiệm Speaking"
+            ctaColor="bg-feature-teal text-feature-teal-foreground hover:bg-feature-teal/90"
             to="/speaking"
           />
           <FeatureCard
-            icon={FolderOpen}
-            iconColor="bg-gradient-to-br from-sky-400 to-blue-600 text-white"
-            title="Kho Đề Forecast &amp; Cam 15-19"
-            description="Tổng hợp bộ đề Forecast Quý mới nhất kèm đáp án và bài mẫu Band 8.0+."
-            cta="Xem Kho Đề"
+            icon={Library}
+            iconColor="bg-feature-green text-feature-green-foreground"
+            title="Kho Đề Forecast &amp; Vol Mới Nhất"
+            description="Tổng hợp bộ đề Forecast theo Quý và các bộ đề Actual Test/Vol mới nhất kèm đáp án &amp; bài mẫu Band 8.0+."
+            cta="Xem Đề Forecast &amp; Vol"
+            ctaColor="bg-feature-teal text-feature-teal-foreground hover:bg-feature-teal/90"
             to="/forecast"
+          />
+          <FeatureCard
+            icon={BookOpen}
+            iconColor="bg-feature-purple text-feature-purple-foreground"
+            title="Bộ Đề Cambridge &amp; Practice Tests"
+            description="Trọn bộ đề thi IELTS Cambridge từ Cam 9 đến Cam 20+ và các bộ đề luyện tập chuẩn format thi thật."
+            cta="Làm Đề Cambridge"
+            ctaColor="bg-feature-purple text-feature-purple-foreground hover:bg-feature-purple/90"
+            to="/cambridge"
           />
         </div>
       </section>
