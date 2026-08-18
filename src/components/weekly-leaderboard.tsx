@@ -1,28 +1,10 @@
-import { useMemo, useState } from "react";
-import { Trophy } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Loader2, Trophy } from "lucide-react";
 
+import { leaderboardQuery, type LeaderRow } from "@/lib/db";
+import { getLearnerId, initials } from "@/lib/learner";
 import { cn } from "@/lib/utils";
-
-type Entry = { name: string; initials: string; count: number; avg: number };
-
-const DATA: Record<"grading" | "practice", Entry[]> = {
-  grading: [
-    { name: "Nguyễn Minh Anh", initials: "MA", count: 24, avg: 7.5 },
-    { name: "Trần Bảo Long", initials: "BL", count: 19, avg: 7.0 },
-    { name: "Phạm Thanh An", initials: "TA", count: 16, avg: 6.5 },
-    { name: "Lê Hoàng Nam", initials: "HN", count: 12, avg: 5.5 },
-    { name: "Đỗ Khánh Linh", initials: "KL", count: 9, avg: 6.0 },
-    { name: "Vũ Gia Hân", initials: "GH", count: 7, avg: 6.5 },
-  ],
-  practice: [
-    { name: "Đỗ Khánh Linh", initials: "KL", count: 31, avg: 6.5 },
-    { name: "Trần Bảo Long", initials: "BL", count: 27, avg: 7.0 },
-    { name: "Nguyễn Minh Anh", initials: "MA", count: 22, avg: 8.0 },
-    { name: "Vũ Gia Hân", initials: "GH", count: 15, avg: 6.0 },
-    { name: "Lê Hoàng Nam", initials: "HN", count: 11, avg: 5.5 },
-    { name: "Phạm Thanh An", initials: "TA", count: 8, avg: 7.0 },
-  ],
-};
 
 const RANK_STYLES = [
   "bg-vip text-vip-foreground",
@@ -33,11 +15,18 @@ const RANK_STYLES = [
 export function WeeklyLeaderboard() {
   const [tab, setTab] = useState<"grading" | "practice">("grading");
   const [sort, setSort] = useState<"count" | "avg">("count");
+  const [me, setMe] = useState<string>("");
 
-  const rows = useMemo(
-    () => [...DATA[tab]].sort((a, b) => (sort === "count" ? b.count - a.count : b.avg - a.avg)),
-    [tab, sort],
-  );
+  useEffect(() => setMe(getLearnerId()), []);
+
+  const { data, isLoading } = useQuery(leaderboardQuery());
+
+  const rows: LeaderRow[] = useMemo(() => {
+    const list = data?.[tab] ?? [];
+    return [...list]
+      .sort((a, b) => (sort === "count" ? b.count - a.count || b.avg - a.avg : b.avg - a.avg || b.count - a.count))
+      .slice(0, 10);
+  }, [data, tab, sort]);
 
   return (
     <section className="surface p-5">
@@ -47,7 +36,9 @@ export function WeeklyLeaderboard() {
         </span>
         <div>
           <h2 className="text-base font-bold">Xếp hạng tuần</h2>
-          <p className="text-[11px] text-muted-foreground">Top học viên 7 ngày qua</p>
+          <p className="text-[11px] text-muted-foreground">
+            Cập nhật realtime từ bài làm 7 ngày qua
+          </p>
         </div>
       </div>
 
@@ -86,8 +77,8 @@ export function WeeklyLeaderboard() {
               className={cn(
                 "rounded-full border px-2.5 py-1 text-[11px] font-semibold transition-colors",
                 sort === key
-                  ? "border-primary/40 bg-primary/10 text-primary"
-                  : "border-border text-muted-foreground hover:text-foreground",
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "border-border text-muted-foreground hover:bg-muted",
               )}
             >
               {label}
@@ -96,28 +87,49 @@ export function WeeklyLeaderboard() {
         </div>
       </div>
 
-      <ul className="mt-3 space-y-1.5">
+      {isLoading && (
+        <div className="mt-6 grid place-items-center py-6">
+          <Loader2 className="h-5 w-5 animate-spin text-primary" />
+        </div>
+      )}
+
+      {!isLoading && !rows.length && (
+        <p className="mt-5 rounded-xl border border-dashed border-border px-3 py-6 text-center text-xs text-muted-foreground">
+          Chưa có ai nộp bài tuần này. Hãy là người đầu tiên lên bảng xếp hạng!
+        </p>
+      )}
+
+      <ul className="mt-4 space-y-2">
         {rows.map((r, i) => (
           <li
-            key={r.name}
-            className="flex items-center gap-3 rounded-xl border border-border/60 bg-background/40 px-3 py-2.5"
+            key={r.userId}
+            className={cn(
+              "flex items-center gap-3 rounded-xl border px-3 py-2.5",
+              r.userId === me ? "border-primary/40 bg-primary/5" : "border-border bg-background/40",
+            )}
           >
             <span
               className={cn(
-                "grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-extrabold",
+                "grid h-7 w-7 shrink-0 place-items-center rounded-lg text-[11px] font-extrabold",
                 RANK_STYLES[i] ?? "bg-muted text-muted-foreground",
               )}
             >
               {i + 1}
             </span>
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary/15 text-xs font-bold text-primary">
-              {r.initials}
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary/10 text-[11px] font-bold text-primary">
+              {initials(r.name)}
             </span>
-            <span className="min-w-0 flex-1">
-              <span className="block truncate text-sm font-semibold">{r.name}</span>
-              <span className="block truncate text-[11px] text-muted-foreground">
-                {r.count} bài • Trung bình: {r.avg.toFixed(1)}
-              </span>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-semibold">
+                {r.name}
+                {r.userId === me && (
+                  <span className="ml-1.5 text-[10px] font-bold text-primary">(Bạn)</span>
+                )}
+              </p>
+              <p className="text-[11px] text-muted-foreground">{r.count} bài · cao nhất {r.best.toFixed(1)}</p>
+            </div>
+            <span className="shrink-0 text-sm font-extrabold tabular-nums text-neon">
+              {r.avg.toFixed(1)}
             </span>
           </li>
         ))}

@@ -5,6 +5,8 @@ import {
   Crown,
   FileText,
   FolderOpen,
+  Home,
+  BookOpen,
   HelpCircle,
   History,
   LifeBuoy,
@@ -25,9 +27,11 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
 const FEATURES = [
-  { label: "Chấm Writing AI", icon: PenLine, to: "/", locked: false },
+  { label: "Trang Chủ (Dashboard)", icon: Home, to: "/", locked: false },
+  { label: "Chấm Writing AI", icon: PenLine, to: "/writing", locked: false },
   { label: "Luyện Speaking AI", icon: Mic, to: "/speaking", locked: true },
-  { label: "Kho Đề Cam & Forecast / Actual Test", icon: FolderOpen, to: "/forecast", locked: true },
+  { label: "Kho Đề Forecast / Actual Test", icon: FolderOpen, to: "/forecast", locked: true },
+  { label: "Bộ Đề Cambridge 9-21", icon: BookOpen, to: "/cambridge", locked: false },
 ];
 
 const NAV: { title: string; items: { to: string; label: string; icon: typeof History }[] }[] = [

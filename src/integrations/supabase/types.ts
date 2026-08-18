@@ -14,6 +14,98 @@ export type Database = {
   }
   public: {
     Tables: {
+      prompts: {
+        Row: {
+          answer_key: Json | null
+          audio_url: string | null
+          category: string
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          questions: Json | null
+          sort_order: number
+          target_vol: string | null
+          title: string
+          type: string
+        }
+        Insert: {
+          answer_key?: Json | null
+          audio_url?: string | null
+          category: string
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          questions?: Json | null
+          sort_order?: number
+          target_vol?: string | null
+          title: string
+          type: string
+        }
+        Update: {
+          answer_key?: Json | null
+          audio_url?: string | null
+          category?: string
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          questions?: Json | null
+          sort_order?: number
+          target_vol?: string | null
+          title?: string
+          type?: string
+        }
+        Relationships: []
+      }
+      submissions: {
+        Row: {
+          created_at: string
+          display_name: string
+          id: string
+          mode: string
+          prompt_id: string | null
+          score_details: Json | null
+          score_overall: number
+          skill: string
+          user_answers: Json | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string
+          id?: string
+          mode?: string
+          prompt_id?: string | null
+          score_details?: Json | null
+          score_overall: number
+          skill: string
+          user_answers?: Json | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          id?: string
+          mode?: string
+          prompt_id?: string | null
+          score_details?: Json | null
+          score_overall?: number
+          skill?: string
+          user_answers?: Json | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "submissions_prompt_id_fkey"
+            columns: ["prompt_id"]
+            isOneToOne: false
+            referencedRelation: "prompts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       vip_requests: {
         Row: {
           amount: number
