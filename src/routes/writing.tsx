@@ -17,11 +17,11 @@ import { getLearnerId, getLearnerName } from "@/lib/learner";
 import { KEYS, addItem, newId } from "@/lib/storage";
 import { VOCAB_TOPICS } from "@/lib/vocab-bank";
 
-type Search = { promptId?: string };
+type Search = { promptId?: string | undefined };
 
 export const Route = createFileRoute("/writing")({
   validateSearch: (search: Record<string, unknown>): Search => ({
-    promptId: typeof search.promptId === "string" ? search.promptId : undefined,
+    promptId: typeof search["promptId"] === "string" ? (search["promptId"] as string) : undefined,
   }),
   head: () => ({
     meta: [
@@ -123,8 +123,14 @@ function WritingWorkspace() {
   const submitted = mutation.variables?.essay ?? "";
 
   const submit = () => {
-    if (topic.trim().length < 5) return toast.error("Vui lòng nhập hoặc chọn đề bài.");
-    if (wordCount < 40) return toast.error("Bài làm quá ngắn (tối thiểu ~40 từ).");
+    if (topic.trim().length < 5) {
+      toast.error("Vui lòng nhập hoặc chọn đề bài.");
+      return;
+    }
+    if (wordCount < 40) {
+      toast.error("Bài làm quá ngắn (tối thiểu ~40 từ).");
+      return;
+    }
     mutation.mutate({ topic: topic.trim(), essay: essay.trim() });
   };
 

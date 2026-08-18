@@ -37,7 +37,7 @@ export function AssessmentResult({
   submitted,
   topic,
 }: {
-  result?: Assessment;
+  result?: Assessment | undefined;
   submitted: string;
   topic: string;
 }) {

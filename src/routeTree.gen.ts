@@ -20,6 +20,7 @@ import { Route as SpeakingRouteImport } from './routes/speaking'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as VocabBankRouteImport } from './routes/vocab-bank'
 import { Route as VocabularyRouteImport } from './routes/vocabulary'
+import { Route as WritingRouteImport } from './routes/writing'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -76,6 +77,11 @@ const VocabularyRoute = VocabularyRouteImport.update({
   path: '/vocabulary',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WritingRoute = WritingRouteImport.update({
+  id: '/writing',
+  path: '/writing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/support': typeof SupportRoute
   '/vocab-bank': typeof VocabBankRoute
   '/vocabulary': typeof VocabularyRoute
+  '/writing': typeof WritingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/support': typeof SupportRoute
   '/vocab-bank': typeof VocabBankRoute
   '/vocabulary': typeof VocabularyRoute
+  '/writing': typeof WritingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/support': typeof SupportRoute
   '/vocab-bank': typeof VocabBankRoute
   '/vocabulary': typeof VocabularyRoute
+  '/writing': typeof WritingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/support'
     | '/vocab-bank'
     | '/vocabulary'
+    | '/writing'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/support'
     | '/vocab-bank'
     | '/vocabulary'
+    | '/writing'
   id:
     | '__root__'
     | '/'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/support'
     | '/vocab-bank'
     | '/vocabulary'
+    | '/writing'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -171,6 +183,7 @@ export interface RootRouteChildren {
   SupportRoute: typeof SupportRoute
   VocabBankRoute: typeof VocabBankRoute
   VocabularyRoute: typeof VocabularyRoute
+  WritingRoute: typeof WritingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -252,6 +265,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VocabularyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/writing': {
+      id: '/writing'
+      path: '/writing'
+      fullPath: '/writing'
+      preLoaderRoute: typeof WritingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -267,6 +287,7 @@ const rootRouteChildren: RootRouteChildren = {
   SupportRoute: SupportRoute,
   VocabBankRoute: VocabBankRoute,
   VocabularyRoute: VocabularyRoute,
+  WritingRoute: WritingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
