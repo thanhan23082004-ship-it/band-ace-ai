@@ -105,62 +105,50 @@ export type LeaderRow = {
 
 export type LeaderboardData = { grading: LeaderRow[]; practice: LeaderRow[] };
 
-function aggregate(rows: Submission[]): LeaderRow[] {
-  const map = new Map<string, { name: string; total: number; count: number; best: number }>();
-  for (const r of rows) {
-    const cur = map.get(r.user_id) ?? { name: r.display_name, total: 0, count: 0, best: 0 };
-    cur.name = r.display_name || cur.name;
-    cur.total += Number(r.score_overall);
-    cur.count += 1;
-    cur.best = Math.max(cur.best, Number(r.score_overall));
-    map.set(r.user_id, cur);
-  }
-  return [...map.entries()].map(([userId, v]) => ({
-    userId,
-    name: v.name,
-    count: v.count,
-    avg: v.count ? v.total / v.count : 0,
-    best: v.best,
-  }));
-}
-
 export function leaderboardQuery() {
   return queryOptions({
     queryKey: ["leaderboard"],
     refetchInterval: 20_000,
     queryFn: async (): Promise<LeaderboardData> => {
-      const since = new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString();
-      const { data, error } = await supabase
-        .from("submissions")
-        .select("*")
-        .gte("created_at", since)
-        .order("created_at", { ascending: false })
-        .limit(1000);
+      const { data, error } = await supabase.rpc("get_leaderboard");
       if (error) throw new Error(error.message);
       const rows = data ?? [];
-      return {
-        grading: aggregate(rows.filter((r) => r.skill === "writing" || r.skill === "speaking")),
-        practice: aggregate(rows.filter((r) => r.skill === "reading" || r.skill === "listening")),
-      };
+      const map = (group: string): LeaderRow[] =>
+        rows
+          .filter((r) => r.skill_group === group)
+          .map((r) => ({
+            userId: r.user_key,
+            name: r.name,
+            count: Number(r.submission_count),
+            avg: Number(r.avg_score),
+            best: Number(r.best_score),
+          }));
+      return { grading: map("grading"), practice: map("practice") };
     },
   });
 }
+
+export type MySubmission = {
+  id: string;
+  prompt_id: string | null;
+  skill: string;
+  mode: string;
+  score_overall: number;
+  score_details: Json | null;
+  user_answers: Json | null;
+  created_at: string;
+};
 
 export function mySubmissionsQuery(userId: string | undefined) {
   return queryOptions({
     queryKey: ["submissions", "mine", userId],
     enabled: Boolean(userId),
     refetchInterval: 30_000,
-    queryFn: async (): Promise<Submission[]> => {
+    queryFn: async (): Promise<MySubmission[]> => {
       if (!userId) return [];
-      const { data, error } = await supabase
-        .from("submissions")
-        .select("*")
-        .eq("user_id", userId)
-        .order("created_at", { ascending: false })
-        .limit(200);
+      const { data, error } = await supabase.rpc("get_my_submissions", { _user_id: userId });
       if (error) throw new Error(error.message);
-      return data ?? [];
+      return (data ?? []) as MySubmission[];
     },
   });
 }
