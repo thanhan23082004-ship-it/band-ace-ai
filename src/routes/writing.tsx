@@ -1,8 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, ImageIcon, Loader2, Sparkles } from "lucide-react";
+import { ArrowRight, ImageIcon, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,6 @@ import { assessEssay, type Assessment } from "@/lib/assess.functions";
 import { promptQuery, recordSubmission, writingPromptsQuery, TYPE_LABEL } from "@/lib/db";
 import { getLearnerId, getLearnerName } from "@/lib/learner";
 import { KEYS, addItem, newId } from "@/lib/storage";
-import { VOCAB_TOPICS } from "@/lib/vocab-bank";
 
 type Search = { promptId?: string | undefined };
 
@@ -43,22 +42,6 @@ export const Route = createFileRoute("/writing")({
   component: WritingWorkspace,
 });
 
-/** Gợi ý topic vocabulary theo từ khoá xuất hiện trong đề bài. */
-function suggestVocab(topic: string) {
-  const t = topic.toLowerCase();
-  const map: Record<string, string[]> = {
-    education: ["school", "student", "university", "education", "learn", "teach"],
-    environment: ["environment", "pollution", "climate", "energy", "recycl", "waste"],
-    technology: ["technolog", "digital", "internet", "ai", "artificial", "device", "online"],
-    health: ["health", "illness", "medicine", "diet", "food", "fitness"],
-    work: ["work", "job", "employ", "office", "career", "salary", "housing", "city"],
-  };
-  const hit = Object.entries(map).find(([, kws]) => kws.some((k) => t.includes(k)));
-  const key = hit?.[0] ?? "work";
-  const found = VOCAB_TOPICS.find((v) => v.key === key) ?? VOCAB_TOPICS[0]!;
-  return { topic: found, words: found.words.slice(0, 5) };
-}
-
 function WritingWorkspace() {
   const { promptId } = Route.useSearch();
   const promptRes = useQuery(promptQuery(promptId));
@@ -84,7 +67,6 @@ function WritingWorkspace() {
 
   const assess = useServerFn(assessEssay);
   const wordCount = useMemo(() => essay.trim().split(/\s+/).filter(Boolean).length, [essay]);
-  const vocab = useMemo(() => suggestVocab(topic), [topic]);
 
   const mutation = useMutation({
     mutationFn: (vars: { topic: string; essay: string }) => assess({ data: vars }),
@@ -172,7 +154,7 @@ function WritingWorkspace() {
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        {/* LEFT: prompt + image + vocabulary */}
+        {/* LEFT: prompt + image */}
         <div className="space-y-6">
           <div className="surface p-6">
             <h2 className="text-base font-bold">Đề bài (Topic)</h2>
@@ -224,28 +206,6 @@ function WritingWorkspace() {
             )}
           </div>
 
-          <div className="surface p-6">
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-primary" />
-              <h2 className="text-base font-bold">
-                Topic Vocabulary · {vocab.topic.name} ({vocab.topic.vi})
-              </h2>
-            </div>
-            <ul className="mt-4 space-y-3">
-              {vocab.words.map((w) => (
-                <li key={w.word} className="rounded-xl border border-border bg-muted/40 p-3">
-                  <p className="text-sm font-semibold text-primary">{w.word}</p>
-                  <p className="text-[11px] text-muted-foreground">
-                    {w.ipa} · {w.meaning}
-                  </p>
-                  <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{w.example}</p>
-                </li>
-              ))}
-            </ul>
-            <Link to="/vocab-bank" className="mt-4 inline-block text-xs font-semibold text-primary underline underline-offset-4">
-              Xem toàn bộ kho từ vựng Band 7.0+
-            </Link>
-          </div>
         </div>
 
         {/* RIGHT: essay editor */}

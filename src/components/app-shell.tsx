@@ -10,12 +10,10 @@ import {
   HelpCircle,
   History,
   LifeBuoy,
-  Library,
   Lock,
   Menu,
   Mic,
   PenLine,
-  PenTool,
   Sparkles,
   X,
 } from "lucide-react";
@@ -35,10 +33,6 @@ const FEATURES = [
 ];
 
 const NAV: { title: string; items: { to: string; label: string; icon: typeof History }[] }[] = [
-  {
-    title: "Học tập",
-    items: [{ to: "/vocab-bank", label: "Từ Vựng Band 7.0+", icon: Library }],
-  },
   {
     title: "Account",
     items: [
@@ -74,8 +68,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       >
         <div className="flex items-center justify-between gap-2 px-5 py-4">
           <Link to="/" className="flex min-w-0 items-center gap-2.5" onClick={() => setMobileOpen(false)}>
-            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground">
-              <PenTool className="h-4 w-4" />
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary text-[15px] font-extrabold leading-none text-primary-foreground">
+              U
             </span>
             <span className="truncate text-[15px] font-bold tracking-tight">IELTS For You</span>
           </Link>
@@ -197,7 +191,9 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <Menu className="h-5 w-5" />
               </button>
               <span className="flex items-center gap-2 lg:hidden">
-                <PenTool className="h-4 w-4 text-primary" />
+                <span className="grid h-6 w-6 place-items-center rounded-lg bg-primary text-[12px] font-extrabold leading-none text-primary-foreground">
+                  U
+                </span>
                 <span className="text-sm font-bold">IELTS For You</span>
               </span>
               <span className="hidden items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs font-semibold text-primary lg:inline-flex">
