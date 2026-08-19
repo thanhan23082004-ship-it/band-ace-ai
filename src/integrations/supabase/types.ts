@@ -138,7 +138,30 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_leaderboard: {
+        Args: never
+        Returns: {
+          avg_score: number
+          best_score: number
+          name: string
+          skill_group: string
+          submission_count: number
+          user_key: string
+        }[]
+      }
+      get_my_submissions: {
+        Args: { _user_id: string }
+        Returns: {
+          created_at: string
+          id: string
+          mode: string
+          prompt_id: string
+          score_details: Json
+          score_overall: number
+          skill: string
+          user_answers: Json
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
