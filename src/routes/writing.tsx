@@ -15,7 +15,6 @@ import { assessEssay, type Assessment } from "@/lib/assess.functions";
 import { promptQuery, recordSubmission, writingPromptsQuery, TYPE_LABEL } from "@/lib/db";
 import { getLearnerId, getLearnerName } from "@/lib/learner";
 import { KEYS, addItem, newId } from "@/lib/storage";
-import { VOCAB_TOPICS } from "@/lib/vocab-bank";
 
 type Search = { promptId?: string | undefined };
 
@@ -43,22 +42,6 @@ export const Route = createFileRoute("/writing")({
   component: WritingWorkspace,
 });
 
-/** Gợi ý topic vocabulary theo từ khoá xuất hiện trong đề bài. */
-function suggestVocab(topic: string) {
-  const t = topic.toLowerCase();
-  const map: Record<string, string[]> = {
-    education: ["school", "student", "university", "education", "learn", "teach"],
-    environment: ["environment", "pollution", "climate", "energy", "recycl", "waste"],
-    technology: ["technolog", "digital", "internet", "ai", "artificial", "device", "online"],
-    health: ["health", "illness", "medicine", "diet", "food", "fitness"],
-    work: ["work", "job", "employ", "office", "career", "salary", "housing", "city"],
-  };
-  const hit = Object.entries(map).find(([, kws]) => kws.some((k) => t.includes(k)));
-  const key = hit?.[0] ?? "work";
-  const found = VOCAB_TOPICS.find((v) => v.key === key) ?? VOCAB_TOPICS[0]!;
-  return { topic: found, words: found.words.slice(0, 5) };
-}
-
 function WritingWorkspace() {
   const { promptId } = Route.useSearch();
   const promptRes = useQuery(promptQuery(promptId));
@@ -84,7 +67,6 @@ function WritingWorkspace() {
 
   const assess = useServerFn(assessEssay);
   const wordCount = useMemo(() => essay.trim().split(/\s+/).filter(Boolean).length, [essay]);
-  const vocab = useMemo(() => suggestVocab(topic), [topic]);
 
   const mutation = useMutation({
     mutationFn: (vars: { topic: string; essay: string }) => assess({ data: vars }),
@@ -172,7 +154,7 @@ function WritingWorkspace() {
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        {/* LEFT: prompt + image + vocabulary */}
+        {/* LEFT: prompt + image */}
         <div className="space-y-6">
           <div className="surface p-6">
             <h2 className="text-base font-bold">Đề bài (Topic)</h2>
