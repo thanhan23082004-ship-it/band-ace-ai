@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import {
+  BarChart3,
   BookMarked,
   Crown,
   FileText,
@@ -15,6 +16,7 @@ import {
   Mic,
   PenLine,
   Sparkles,
+  Trophy,
   X,
 } from "lucide-react";
 
@@ -33,6 +35,13 @@ const FEATURES = [
 ];
 
 const NAV: { title: string; items: { to: string; label: string; icon: typeof History }[] }[] = [
+  {
+    title: "Thống kê",
+    items: [
+      { to: "/performance", label: "Hiệu Suất Học Tập", icon: BarChart3 },
+      { to: "/leaderboard", label: "Bảng Xếp Hạng Tuần", icon: Trophy },
+    ],
+  },
   {
     title: "Account",
     items: [

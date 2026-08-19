@@ -1,10 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, BookOpen, Library, Mic, PenLine, Sparkles } from "lucide-react";
+import { ArrowRight, BarChart3, BookOpen, Library, Mic, PenLine, Sparkles, Trophy } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { SkillPerformance } from "@/components/skill-performance";
 import { VipComparison } from "@/components/vip-comparison";
-import { WeeklyLeaderboard } from "@/components/weekly-leaderboard";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
