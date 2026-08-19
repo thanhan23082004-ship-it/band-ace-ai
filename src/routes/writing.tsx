@@ -224,28 +224,6 @@ function WritingWorkspace() {
             )}
           </div>
 
-          <div className="surface p-6">
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-primary" />
-              <h2 className="text-base font-bold">
-                Topic Vocabulary · {vocab.topic.name} ({vocab.topic.vi})
-              </h2>
-            </div>
-            <ul className="mt-4 space-y-3">
-              {vocab.words.map((w) => (
-                <li key={w.word} className="rounded-xl border border-border bg-muted/40 p-3">
-                  <p className="text-sm font-semibold text-primary">{w.word}</p>
-                  <p className="text-[11px] text-muted-foreground">
-                    {w.ipa} · {w.meaning}
-                  </p>
-                  <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{w.example}</p>
-                </li>
-              ))}
-            </ul>
-            <Link to="/vocab-bank" className="mt-4 inline-block text-xs font-semibold text-primary underline underline-offset-4">
-              Xem toàn bộ kho từ vựng Band 7.0+
-            </Link>
-          </div>
         </div>
 
         {/* RIGHT: essay editor */}
