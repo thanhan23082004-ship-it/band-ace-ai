@@ -16,6 +16,7 @@ import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ForecastRouteImport } from './routes/forecast'
 import { Route as GuideRouteImport } from './routes/guide'
 import { Route as HistoryRouteImport } from './routes/history'
+import { Route as LeaderboardRouteImport } from './routes/leaderboard'
 import { Route as PerformanceRouteImport } from './routes/performance'
 import { Route as SpeakingRouteImport } from './routes/speaking'
 import { Route as SupportRouteImport } from './routes/support'
@@ -58,6 +59,11 @@ const HistoryRoute = HistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LeaderboardRoute = LeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PerformanceRoute = PerformanceRouteImport.update({
   id: '/performance',
   path: '/performance',
@@ -97,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/forecast': typeof ForecastRoute
   '/guide': typeof GuideRoute
   '/history': typeof HistoryRoute
+  '/leaderboard': typeof LeaderboardRoute
   '/performance': typeof PerformanceRoute
   '/speaking': typeof SpeakingRoute
   '/support': typeof SupportRoute
@@ -112,6 +119,7 @@ export interface FileRoutesByTo {
   '/forecast': typeof ForecastRoute
   '/guide': typeof GuideRoute
   '/history': typeof HistoryRoute
+  '/leaderboard': typeof LeaderboardRoute
   '/performance': typeof PerformanceRoute
   '/speaking': typeof SpeakingRoute
   '/support': typeof SupportRoute
@@ -128,6 +136,7 @@ export interface FileRoutesById {
   '/forecast': typeof ForecastRoute
   '/guide': typeof GuideRoute
   '/history': typeof HistoryRoute
+  '/leaderboard': typeof LeaderboardRoute
   '/performance': typeof PerformanceRoute
   '/speaking': typeof SpeakingRoute
   '/support': typeof SupportRoute
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/forecast'
     | '/guide'
     | '/history'
+    | '/leaderboard'
     | '/performance'
     | '/speaking'
     | '/support'
@@ -160,6 +170,7 @@ export interface FileRouteTypes {
     | '/forecast'
     | '/guide'
     | '/history'
+    | '/leaderboard'
     | '/performance'
     | '/speaking'
     | '/support'
@@ -175,6 +186,7 @@ export interface FileRouteTypes {
     | '/forecast'
     | '/guide'
     | '/history'
+    | '/leaderboard'
     | '/performance'
     | '/speaking'
     | '/support'
@@ -191,6 +203,7 @@ export interface RootRouteChildren {
   ForecastRoute: typeof ForecastRoute
   GuideRoute: typeof GuideRoute
   HistoryRoute: typeof HistoryRoute
+  LeaderboardRoute: typeof LeaderboardRoute
   PerformanceRoute: typeof PerformanceRoute
   SpeakingRoute: typeof SpeakingRoute
   SupportRoute: typeof SupportRoute
@@ -250,6 +263,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/leaderboard': {
+      id: '/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof LeaderboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/performance': {
       id: '/performance'
       path: '/performance'
@@ -303,6 +323,7 @@ const rootRouteChildren: RootRouteChildren = {
   ForecastRoute: ForecastRoute,
   GuideRoute: GuideRoute,
   HistoryRoute: HistoryRoute,
+  LeaderboardRoute: LeaderboardRoute,
   PerformanceRoute: PerformanceRoute,
   SpeakingRoute: SpeakingRoute,
   SupportRoute: SupportRoute,

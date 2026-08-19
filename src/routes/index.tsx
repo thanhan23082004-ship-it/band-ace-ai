@@ -133,14 +133,29 @@ function Index() {
         </div>
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
-          <SkillPerformance />
-          <VipComparison />
-        </div>
-        <div className="lg:col-span-1">
-          <WeeklyLeaderboard />
-        </div>
+      <section className="grid gap-4 sm:grid-cols-2">
+        <FeatureCard
+          icon={BarChart3}
+          iconColor="bg-primary/15 text-primary"
+          title="Hiệu Suất Học Tập"
+          description="Số bài đã chấm, điểm trung bình và radar 4 tiêu chí cho Task 1 & Task 2."
+          cta="Xem Hiệu Suất"
+          ctaColor="bg-primary text-primary-foreground hover:bg-primary/90"
+          to="/performance"
+        />
+        <FeatureCard
+          icon={Trophy}
+          iconColor="bg-vip/20 text-vip-foreground"
+          title="Bảng Xếp Hạng Tuần"
+          description="Top học viên realtime theo số bài làm và điểm trung bình trong 7 ngày qua."
+          cta="Xem Xếp Hạng"
+          ctaColor="bg-vip text-vip-foreground hover:bg-vip/90"
+          to="/leaderboard"
+        />
+      </section>
+
+      <section className="mt-6">
+        <VipComparison />
       </section>
     </main>
   );
