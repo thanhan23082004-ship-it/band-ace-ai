@@ -1,10 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, BookOpen, Library, Mic, PenLine, Sparkles } from "lucide-react";
+import { ArrowRight, BarChart3, BookOpen, Library, Mic, PenLine, Sparkles, Trophy } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { SkillPerformance } from "@/components/skill-performance";
 import { VipComparison } from "@/components/vip-comparison";
-import { WeeklyLeaderboard } from "@/components/weekly-leaderboard";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
@@ -84,7 +82,7 @@ function Index() {
           <Sparkles className="h-3.5 w-3.5" />
           Nền tảng luyện IELTS thông minh
         </span>
-        <h1 className="mx-auto mt-4 max-w-3xl text-[1.75rem] leading-[1.12] font-extrabold tracking-tight sm:text-4xl md:text-[2.5rem]">
+        <h1 className="mx-auto mt-4 max-w-3xl text-[1.75rem] leading-[1.3] font-extrabold tracking-tight sm:text-4xl md:text-[2.5rem]">
           Mọi công cụ bạn cần để <span className="hero-gradient">chinh phục IELTS</span>
         </h1>
         <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
@@ -133,14 +131,29 @@ function Index() {
         </div>
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
-          <SkillPerformance />
-          <VipComparison />
-        </div>
-        <div className="lg:col-span-1">
-          <WeeklyLeaderboard />
-        </div>
+      <section className="grid gap-4 sm:grid-cols-2">
+        <FeatureCard
+          icon={BarChart3}
+          iconColor="bg-primary/15 text-primary"
+          title="Hiệu Suất Học Tập"
+          description="Số bài đã chấm, điểm trung bình và radar 4 tiêu chí cho Task 1 & Task 2."
+          cta="Xem Hiệu Suất"
+          ctaColor="bg-primary text-primary-foreground hover:bg-primary/90"
+          to="/performance"
+        />
+        <FeatureCard
+          icon={Trophy}
+          iconColor="bg-vip/20 text-vip-foreground"
+          title="Bảng Xếp Hạng Tuần"
+          description="Top học viên realtime theo số bài làm và điểm trung bình trong 7 ngày qua."
+          cta="Xem Xếp Hạng"
+          ctaColor="bg-vip text-vip-foreground hover:bg-vip/90"
+          to="/leaderboard"
+        />
+      </section>
+
+      <section className="mt-6">
+        <VipComparison />
       </section>
     </main>
   );
