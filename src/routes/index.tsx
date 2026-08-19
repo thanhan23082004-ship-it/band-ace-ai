@@ -82,7 +82,7 @@ function Index() {
           <Sparkles className="h-3.5 w-3.5" />
           Nền tảng luyện IELTS thông minh
         </span>
-        <h1 className="mx-auto mt-4 max-w-3xl text-[1.75rem] leading-[1.12] font-extrabold tracking-tight sm:text-4xl md:text-[2.5rem]">
+        <h1 className="mx-auto mt-4 max-w-3xl text-[1.75rem] leading-[1.3] font-extrabold tracking-tight sm:text-4xl md:text-[2.5rem]">
           Mọi công cụ bạn cần để <span className="hero-gradient">chinh phục IELTS</span>
         </h1>
         <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
