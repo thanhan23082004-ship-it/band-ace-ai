@@ -35,42 +35,30 @@ type RawResult = Partial<Assessment> & { overall_band?: number };
 export const assessEssay = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => inputSchema.parse(data))
   .handler(async ({ data }): Promise<Assessment> => {
-    const apiKey = process.env["OPENAI_API_KEY"];
-    if (!apiKey) throw new Error("Chưa cấu hình OPENAI_API_KEY.");
+    const apiKey = process.env["GEMINI_API_KEY"] ?? process.env["VITE_GEMINI_API_KEY"];
+    if (!apiKey) throw new Error("Chưa cấu hình Gemini API key.");
 
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(apiKey)}`, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
-        temperature: 0.2,
-        response_format: { type: "json_object" },
-        messages: [
-          { role: "system", content: SYSTEM },
-          {
-            role: "user",
-            content: `ĐỀ BÀI:\n${data.topic}\n\nBÀI LÀM:\n${data.essay}`,
-          },
-        ],
+        generationConfig: { temperature: 0.2, responseMimeType: "application/json" },
+        contents: [{ role: "user", parts: [{ text: `${SYSTEM}\n\nĐỀ BÀI:\n${data.topic}\n\nBÀI LÀM:\n${data.essay}` }] }],
       }),
     });
 
     if (!res.ok) {
       const body = await res.text();
-      console.error("OpenAI error", res.status, body);
-      if (res.status === 429)
-        throw new Error("OpenAI đang quá tải hoặc hết quota, vui lòng thử lại sau ít phút.");
-      if (res.status === 401) throw new Error("OPENAI_API_KEY không hợp lệ.");
+      console.error("Gemini error", res.status, body);
+      if (res.status === 429) throw new Error("Gemini đang quá tải hoặc hết quota, vui lòng thử lại sau ít phút.");
+      if (res.status === 400 || res.status === 401) throw new Error("Gemini API key không hợp lệ hoặc yêu cầu bị từ chối.");
       throw new Error(`Chấm bài thất bại [${res.status}].`);
     }
 
     const payload = (await res.json()) as {
-      choices?: { message?: { content?: string } }[];
+      candidates?: { content?: { parts?: { text?: string }[] } }[];
     };
-    const raw = payload.choices?.[0]?.message?.content ?? "";
+    const raw = payload.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
     const cleaned = raw
       .trim()
       .replace(/^```(?:json)?/i, "")

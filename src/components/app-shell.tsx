@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
-import { Link } from "@tanstack/react-router";
-import { Crown, FolderOpen, History, Menu, Mic, PenLine, X } from "lucide-react";
+import { Link, useRouterState } from "@tanstack/react-router";
+import { ArrowLeft, Crown, FolderOpen, History, Menu, Mic, PenLine, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { VipDialog } from "@/components/vip-dialog";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -16,6 +16,8 @@ const links = [
 export function AppShell({ children }: { children: ReactNode }) {
   const [vipOpen, setVipOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const isHome = pathname === "/";
 
   return (
     <div className="min-h-screen bg-background">
@@ -29,6 +31,12 @@ export function AppShell({ children }: { children: ReactNode }) {
             <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary text-sm font-black text-primary-foreground">IF</span>
             <span className="text-[15px] font-extrabold tracking-tight">IELTS For You</span>
           </Link>
+          {!isHome && (
+            <Link to="/" className="hidden items-center gap-1 rounded-lg px-2.5 py-2 text-xs font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground xl:flex" aria-label="Quay lại Trang chủ">
+              <ArrowLeft className="h-4 w-4" />
+              Quay lại
+            </Link>
+          )}
           <nav className="hidden min-w-0 flex-1 items-center justify-center gap-1 lg:flex" aria-label="Điều hướng chính">
             {links.map(({ label, to, icon: Icon }) => (
               <Link key={to} to={to} activeProps={{ className: "bg-primary/10 text-primary" }} className="flex items-center gap-2 rounded-lg px-3 py-2 text-[13px] font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
@@ -43,6 +51,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
         {mobileOpen && <nav className="border-t border-border bg-card px-4 py-3 lg:hidden" aria-label="Menu mobile">
           <div className="mx-auto flex max-w-7xl flex-col gap-1">
+            {!isHome && <Link to="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-semibold text-primary hover:bg-primary/10"><ArrowLeft className="h-4 w-4" />Quay lại Trang chủ</Link>}
             {links.map(({ label, to, icon: Icon }) => <Link key={to} to={to} onClick={() => setMobileOpen(false)} activeProps={{ className: "bg-primary/10 text-primary" }} className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-semibold text-muted-foreground hover:bg-muted">{Icon ? <Icon className="h-4 w-4" /> : <span className="w-4" />}{label}</Link>)}
             <Button onClick={() => { setVipOpen(true); setMobileOpen(false); }} className="mt-2 rounded-full bg-vip text-vip-foreground sm:hidden"><Crown className="h-4 w-4" /> Nâng cấp VIP</Button>
           </div>

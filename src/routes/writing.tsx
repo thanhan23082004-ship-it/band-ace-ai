@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { AssessmentResult } from "@/components/assessment-result";
 import { ExamTimer } from "@/components/exam-timer";
+import { SkillInsights } from "@/components/skill-insights";
 
 import { assessEssay, type Assessment } from "@/lib/assess.functions";
 import { promptQuery, recordSubmission, writingPromptsQuery, TYPE_LABEL } from "@/lib/db";
@@ -251,6 +252,7 @@ function WritingWorkspace() {
       <div className="mt-6">
         <AssessmentResult result={result} submitted={submitted} topic={topic} />
       </div>
+      <SkillInsights skill="Writing" />
     </main>
   );
 }
