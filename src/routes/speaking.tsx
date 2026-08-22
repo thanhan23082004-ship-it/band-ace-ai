@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { VipDialog } from "@/components/vip-dialog";
+import { SkillInsights } from "@/components/skill-insights";
 
 export const Route = createFileRoute("/speaking")({
   head: () => ({
@@ -36,6 +37,7 @@ function SpeakingPage() {
 
   return (
     <main className="mx-auto max-w-4xl px-5 py-12">
+      <SkillInsights skill="Speaking" />
       <VipDialog open={vipOpen} onOpenChange={setVipOpen} />
 
       <div className="surface relative overflow-hidden p-8 text-center sm:p-12">
