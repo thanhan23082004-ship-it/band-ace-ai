@@ -7,14 +7,7 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
-  // Force Vite to rebuild its optimized dependency graph after package changes.
-  // This prevents stale TanStack Start client-entry URLs in the preview.
-  vite: {
-    optimizeDeps: { force: true },
-  },
-  tanstackStart: {
-    // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-    // nitro/vite builds from this
-    server: { entry: "server" },
-  },
+  // Keep the generated TanStack Start client entry managed by the preset.
+  // Overriding optimizeDeps here causes the preview to rebuild its client entry
+  // during hydration and can leave the dynamic import URL stale.
 });
