@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, BarChart3, BookOpen, Library, Mic, PenLine, Sparkles, Trophy } from "lucide-react";
+import { ArrowRight, BookOpen, Library, Mic, PenLine, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { VipComparison } from "@/components/vip-comparison";
@@ -131,26 +131,6 @@ function Index() {
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2">
-        <FeatureCard
-          icon={BarChart3}
-          iconColor="bg-primary/15 text-primary"
-          title="Hiệu Suất Học Tập"
-          description="Số bài đã chấm, điểm trung bình và radar 4 tiêu chí cho Task 1 & Task 2."
-          cta="Xem Hiệu Suất"
-          ctaColor="bg-primary text-primary-foreground hover:bg-primary/90"
-          to="/performance"
-        />
-        <FeatureCard
-          icon={Trophy}
-          iconColor="bg-vip/20 text-vip-foreground"
-          title="Bảng Xếp Hạng Tuần"
-          description="Top học viên realtime theo số bài làm và điểm trung bình trong 7 ngày qua."
-          cta="Xem Xếp Hạng"
-          ctaColor="bg-vip text-vip-foreground hover:bg-vip/90"
-          to="/leaderboard"
-        />
-      </section>
 
       <section className="mt-6">
         <VipComparison />

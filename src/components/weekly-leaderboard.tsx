@@ -12,7 +12,7 @@ const RANK_STYLES = [
   "bg-primary/15 text-primary",
 ];
 
-export function WeeklyLeaderboard() {
+export function WeeklyLeaderboard({ title = "Xếp hạng tuần" }: { title?: string }) {
   const [tab, setTab] = useState<"grading" | "practice">("grading");
   const [sort, setSort] = useState<"count" | "avg">("count");
   const [me, setMe] = useState<string>("");
@@ -35,7 +35,7 @@ export function WeeklyLeaderboard() {
           <Trophy className="h-4 w-4" />
         </span>
         <div>
-          <h2 className="text-base font-bold">Xếp hạng tuần</h2>
+          <h2 className="text-base font-bold">{title}</h2>
           <p className="text-[11px] text-muted-foreground">
             Cập nhật realtime từ bài làm 7 ngày qua
           </p>
